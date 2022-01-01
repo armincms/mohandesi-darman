@@ -17,7 +17,7 @@ class OrderCompleted
 
             $order->saleables->each(function($orderItem) use ($order) {
                 app('qasedak')->send('hello', $order->customer->mobile);
-            })->dd(); 
+            }); 
         }
     }
 }
