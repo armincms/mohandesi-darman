@@ -1,11 +1,11 @@
 <?php
 
 namespace Armincms\MDarman;
-
-use Illuminate\Contracts\Support\DeferrableProvider;
+ 
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider; 
+use Armincms\Orderable\Events\OrderCompleted;
 
-class ServiceProvider extends LaravelServiceProvider implements DeferrableProvider
+class ServiceProvider extends LaravelServiceProvider 
 { 
 
     /**
@@ -13,31 +13,10 @@ class ServiceProvider extends LaravelServiceProvider implements DeferrableProvid
      *
      * @return void
      */
-    public function register()
-    { 
-         
-    }
-
-    /**
-     * Get the services provided by the provider.
-     *
-     * @return array
-     */
-    public function provides()
-    {
-        return [];
-    }
-
-    /**
-     * Get the events that trigger this service provider to register.
-     *
-     * @return array
-     */
-    public function when()
-    {
-        return [
-            \Core\HttpSite\Events\ServingFront::class,
-            \Illuminate\Console\Events\ArtisanStarting::class,
-        ];
-    }
+    public function boot()
+    {  
+        $this->app->booted(function() {
+            Event::listen(OrderCompleted::class, Listeners\OrderCompleted::class);   
+        });       
+    } 
 }
