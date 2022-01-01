@@ -16,7 +16,7 @@ class ServiceProvider extends LaravelServiceProvider
     public function boot()
     {  
         $this->app->booted(function() {
-            Event::listen(OrderCompleted::class, Listeners\OrderCompleted::class);   
+            \Event::listen(OrderCompleted::class, Listeners\OrderCompleted::class);   
         });       
     } 
 }
