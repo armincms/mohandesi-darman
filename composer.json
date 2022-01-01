@@ -14,7 +14,7 @@
         "armincms/sitemap" : "~0.1",
         "armincms/eset-last" : "dev-master",
         "armincms/zarinpal": "*",
-        "armincms/qasedak": "^0.1"
+        "armincms/arminsms": "^0.1"
     },
     "autoload": {
         "psr-4": {
