@@ -14,6 +14,7 @@
         "armincms/sitemap" : "~0.1",
         "armincms/eset-last" : "dev-master",
         "armincms/zarinpal": "*",
+        "armincms/arminsms-shared": "*",
         "armincms/arminsms": "^0.1"
     },
     "autoload": {
