@@ -15,9 +15,9 @@ class ServiceProvider extends LaravelServiceProvider
      */
     public function boot()
     {  
-        $this->app->booted(function() {
+        $this->app->booted(function($app) {
             \Event::listen(OrderCompleted::class, Listeners\OrderCompleted::class); 
-             
+
             $component = $app['site']->get('easy-license')->components()->first(function($component) {
                 return $component->name() == 'checkout';
             });
