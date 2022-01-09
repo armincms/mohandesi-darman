@@ -25,6 +25,15 @@ class ServiceProvider extends LaravelServiceProvider
             $component->config([
                 'layout' => 'phoenix'
             ]); 
+          
+          
+            $component = $app['site']->get('easy-license')->components()->first(function($component) {
+                return $component->name() == 'credit';
+            });
+
+            $component->config([
+                'layout' => 'mdarman-license-order'
+            ]);
         });    
     } 
 }
