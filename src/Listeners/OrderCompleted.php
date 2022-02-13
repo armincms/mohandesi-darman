@@ -18,13 +18,13 @@ class OrderCompleted
             $order->saleables->each(function($orderItem) use ($order) { 
                 if($orderItem->saleable->delivery === 'card') {
                     $details = collect($orderItem->details)->map->data->each(function($data) use ($order) { 
-                        $credit = collect($data)->map(function($value, $key) {
-                            if (! filter_var($value, FILTER_VALIDATE_URL)) { 
-                                return "{$key}: {$value}";
-                            }
+                        $credit = collect($data)->filter(function($value, $key) {
+                            return ! filter_var($value, FILTER_VALIDATE_URL);
                         }); 
-
-                        app('qasedak')->send($credit->implode("\r\n"), $order->customer->mobile);
+                      
+                        $message = "کاربر گرامی {$order->customer->fullname()} عزیز\r\nضمن تشکر از خرید شما\r\nلایسنس جهت فعالسازی نرم افزار  {$credit->implode(',')} می باشد.\r\nبا احترام دکتر سید علی حسینی";
+                        
+                        app('qasedak')->send($message, $order->customer->mobile);
                     });
                   
                     $details->isNotEmpty() || app('qasedak')->send(
