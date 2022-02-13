@@ -19,7 +19,9 @@ class OrderCompleted
                 if($orderItem->saleable->delivery === 'card') {
                     $details = collect($orderItem->details)->map->data->each(function($data) use ($order) { 
                         $credit = collect($data)->map(function($value, $key) {
-                            return "{$key}: {$value}";
+                            if (! filter_var($value, FILTER_VALIDATE_URL)) { 
+                                return "{$key}: {$value}";
+                            }
                         }); 
 
                         app('qasedak')->send($credit->implode("\r\n"), $order->customer->mobile);
@@ -28,8 +30,7 @@ class OrderCompleted
                     $details->isNotEmpty() || app('qasedak')->send(
                       'مشتری گرامی سفارش شما ثبت و دریافت شد. متاسفانه موجودی لایسنس به پایالن رسیده است. برای پیگیری با پشتیبانی تماس حاصل فرمایید.' . 
                       "\r\n" . 
-                      "شماره سفارش: #{$order->trackingCode()}\r\n".
-                      url('/'), 
+                      "شماره سفارش: #{$order->trackingCode()}\r\n", 
                       $order->customer->mobile
                     );
                 }
