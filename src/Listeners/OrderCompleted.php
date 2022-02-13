@@ -15,9 +15,17 @@ class OrderCompleted
         if($event->order->orderable_type == \Armincms\EasyLicense\License::class) {
             $order = $event->order->loadMissing('saleables.saleable', 'customer');
 
-            $order->saleables->each(function($orderItem) use ($order) {
-                app('qasedak')->send('hello', $order->customer->mobile);
-            }); 
+            $order->saleables->each(function($orderItem) use ($order) { 
+                if($orderItem->saleable->delivery === 'card') {
+                    collect($orderItem->details)->map->data->each(function($data) use ($order) { 
+                        $credit = collect($data)->map(function($value, $key) {
+                            return "{$key}: {$value}";
+                        });
+
+                        app('qasedak')->send($credit->implode("\r\n"), $order->customer->mobile);
+                    });
+                }
+            });
         }
     }
 }
